@@ -1,0 +1,25 @@
+echo "Insert project Name:"
+
+read proj_name
+
+mkdir /Users/saltdev/Documents/Projects/$proj_name
+cd /Users/saltdev/Documents/Projects/$proj_name
+dotnet new globaljson --sdk-version 5.0.404
+dotnet new sln -o $proj_name
+cd $proj_name 
+dotnet new xunit -o $proj_name.Tests
+cd $proj_name.Tests
+mv UnitTest1.cs ${proj_name}Test.cs
+cd ..
+dotnet new classlib -o $proj_name
+cd $proj_name
+mv Class1.cs ${proj_name}.cs
+cd ..
+dotnet add ./$proj_name.Tests reference ./$proj_name
+dotnet add ./$proj_name.Tests package FluentAssertions --version 6.6.0 
+dotnet sln add $proj_name
+dotnet sln add $proj_name.Tests
+echo "$proj_name project created"
+cd ..
+code .
+
