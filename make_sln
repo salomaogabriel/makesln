@@ -1,25 +1,39 @@
-echo "Insert project Name:"
+echo "Insert project Name: (Default: Unnamed project)"
+
 
 read proj_name
+proj_name="${proj_name:=Unnamed project}"
+echo "Project named "$proj_name
+echo "Choose a template (Default: classlib)"
+read template
+test_template="xunit"
+template="${template:=classlib}"
 
-mkdir /Users/saltdev/Documents/Projects/$proj_name
-cd /Users/saltdev/Documents/Projects/$proj_name
+echo "Template selected: "$template
+
+echo Creating new directory...
+mkdir /Users/salt-dev/Documents/Projects/$proj_name
+cd /Users/salt-dev/Documents/Projects/$proj_name
+echo Creating global.json....
 dotnet new globaljson --sdk-version 5.0.404
+echo Creating solution...
 dotnet new sln -o $proj_name
-cd $proj_name 
-dotnet new xunit -o $proj_name.Tests
+cd $proj_name
+dotnet new $test_template -o $proj_name.Tests
 cd $proj_name.Tests
 mv UnitTest1.cs ${proj_name}Test.cs
 cd ..
-dotnet new classlib -o $proj_name
+dotnet new $template -o $proj_name
 cd $proj_name
 mv Class1.cs ${proj_name}.cs
 cd ..
 dotnet add ./$proj_name.Tests reference ./$proj_name
-dotnet add ./$proj_name.Tests package FluentAssertions --version 6.6.0 
+if [$test_template == "xunit" ]
+then
+    dotnet add ./$proj_name.Tests package FluentAssertions --version 6.6.0
+fi
 dotnet sln add $proj_name
 dotnet sln add $proj_name.Tests
-echo "$proj_name project created"
+echo “$proj_name created”
 cd ..
 code .
-
