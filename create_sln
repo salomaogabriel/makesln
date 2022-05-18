@@ -1,0 +1,13 @@
+echo "Insert project Name:"
+
+read proj_name
+
+dotnet new sln -o $proj_name
+cd $proj_name 
+dotnet new xunit -o $proj_name.Tests 
+dotnet new classlib -o $proj_name
+dotnet add ./$proj_name.Tests reference ./$proj_name
+dotnet add ./$proj_name.Tests package FluentAssertions --version 6.6.0 
+dotnet sln add $proj_name
+dotnet sln add $proj_name.Tests
+echo "$proj_name created"
