@@ -1,6 +1,13 @@
 echo "Insert project Name: (Default: Unnamed project)"
-
-
+version=5.0
+for i in $(ls /usr/local/share/dotnet/sdk/)
+ do 
+    if [ ${i:0:1} == "5" ]
+    then
+    version=$i
+    fi
+done
+echo "Version Selected: "$version
 read proj_name
 proj_name="${proj_name:=Unnamed project}"
 echo "Project named "$proj_name
@@ -15,7 +22,7 @@ echo Creating new directory...
 mkdir /Users/salt-dev/Documents/Projects/$proj_name
 cd /Users/salt-dev/Documents/Projects/$proj_name
 echo Creating global.json....
-dotnet new globaljson --sdk-version 5.0.404
+dotnet new globaljson --sdk-version $version
 echo Creating solution...
 dotnet new sln -o $proj_name
 cd $proj_name
