@@ -35,10 +35,7 @@ cd $proj_name
 mv Class1.cs ${proj_name}.cs
 cd ..
 dotnet add ./$proj_name.Tests reference ./$proj_name
-if [$test_template == "xunit" ]
-then
-    dotnet add ./$proj_name.Tests package FluentAssertions --version 6.6.0
-fi
+dotnet add ./$proj_name.Tests package FluentAssertions --version 6.6.0
 dotnet sln add $proj_name
 dotnet sln add $proj_name.Tests
 echo “$proj_name created”
